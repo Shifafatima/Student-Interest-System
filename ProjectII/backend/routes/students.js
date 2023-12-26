@@ -2,7 +2,6 @@ const express=require('express');
 const mongoose=require('mongoose');
 const Students = require('../models/student');
 const router=express.Router();
-//const Students = mongoose.model('students',StudentSchema);
 
 const { body, validationResult } = require('express-validator');
 const { response } = require('express');
@@ -22,7 +21,6 @@ router.post("/addStudent", [
     }
 
     let student = await Students.findOne({ email: req.body.email });
-    // if it finds the email , 400 status will be displayed
     if (student) {
         return res.status(400).json({ success, error: "Sorry, A user with this email exists" });
     }
@@ -55,7 +53,6 @@ router.post("/addStudent", [
 router.get("/getAllInterests", async (req, res) => {
     let success=false;
     try {
-        // Fetch only the 'interest' field for all students
         const interests = await Students.find({}, 'interest');
         success=true;
         res.json({ success,interests });
@@ -70,7 +67,6 @@ router.get("/getAllStudents", async (req, res) => {
     let success = false;
     try {
         // Fetch all students
-        console.log("getting all students")
         const students = await Students.find({});
         success = true;
         res.json({ success, students });
@@ -84,7 +80,6 @@ router.delete("/deleteStudent/:email", async (req, res) => {
     const emailToDelete = req.params.email;
 
     try {
-        // Find the student by email and delete it
         const result = await Students.findOneAndDelete({ email: emailToDelete });
 
         if (result) {
